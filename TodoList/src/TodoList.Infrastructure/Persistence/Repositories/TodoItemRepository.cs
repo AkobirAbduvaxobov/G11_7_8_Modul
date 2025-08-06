@@ -33,6 +33,12 @@ public class TodoItemRepository : ITodoItemRepository
         return _appDbContext.TodoItems;
     }
 
+    public async Task<ICollection<TodoItem>> SelectAllAsync()
+    {
+        var todos = await _appDbContext.TodoItems.ToListAsync();
+        return todos;
+    }
+
     public async Task<TodoItem?> SelectByIdAsync(long todoItemId)
     {
         var todItem = await _appDbContext.TodoItems

@@ -31,10 +31,71 @@ public class TodoItemService : ITodoItemService
 
     public async Task<ICollection<TodoItemGetDto>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var todoItems = await _todoItemRepository.SelectAllAsync(); 
+        var todoItemDtos = todoItems.Select(t => new TodoItemGetDto
+        {
+            TodoItemId = t.TodoItemId,
+            Title = t.Title,
+            Description = t.Description,
+            IsCompleted = t.IsCompleted,
+            CreatedAt = t.CreatedAt,
+            DueDate = t.DueDate
+        }).ToList();
+
+        return todoItemDtos;
     }
 
-    public async Task<TodoItemListResult> GetPagedFilteredToDoItemsAsync(TodoItemFilterParams todoItemFilterParams)
+    public async Task DeleteAsync(long todoItemId)
+    {
+        var todoItem = await _todoItemRepository.SelectByIdAsync(todoItemId);
+        if (todoItem == null)
+        {
+            throw new Exception($"Todo item with ID {todoItemId} not found to delete.");
+        }
+
+        _todoItemRepository.Delete(todoItem);
+        await _todoItemRepository.SaveChangesAsync();
+    }
+
+    public async Task<TodoItemGetDto> GetByIdAsync(long todoItemId)
+    {
+        var todoItem = await _todoItemRepository.SelectByIdAsync(todoItemId);
+        if (todoItem == null)
+        {
+            throw new Exception($"Todo item with ID {todoItemId} not found.");
+        }
+
+        var todoItemDto = new TodoItemGetDto
+        {
+            TodoItemId = todoItem.TodoItemId,
+            Title = todoItem.Title,
+            Description = todoItem.Description,
+            IsCompleted = todoItem.IsCompleted,
+            CreatedAt = todoItem.CreatedAt,
+            DueDate = todoItem.DueDate
+        };
+
+        return todoItemDto;
+    }
+
+    public async Task UpdateAsync(long todoItemId, TodoItemUpdateDto todoItemUpdateDto)
+    {
+        var todoItem = await _todoItemRepository.SelectByIdAsync(todoItemId);
+        if (todoItem == null)
+        {
+            throw new Exception($"Todo item with ID {todoItemId} not found to update");
+        }
+
+        todoItem.Title = todoItemUpdateDto.Title;
+        todoItem.Description = todoItemUpdateDto.Description;
+        todoItem.IsCompleted = todoItemUpdateDto.IsCompleted;
+        todoItem.DueDate = todoItemUpdateDto.DueDate;
+
+        _todoItemRepository.Update(todoItem);
+        await _todoItemRepository.SaveChangesAsync();
+    }
+
+    public TodoItemListResult GetPagedFiltered(TodoItemFilterParams todoItemFilterParams)
     {
         var query = _todoItemRepository.SelectAll();
 
@@ -72,20 +133,26 @@ public class TodoItemService : ITodoItemService
 
         var toDoItems = query.ToList();
 
-        var totalCount = _toDoItemRepository.SelectAllToDoItems()
-            .Where(x => x.UserId == userId)
-            .Count();
-
-        var toDoItemDtos = toDoItems
-            .Select(item => _mapper.Map<ToDoItemGetDto>(item))
-            .ToList();
-
-        var getAllResponseModel = new GetAllResponseModel()
+        var toDoItemDtos = toDoItems.Select(t => new TodoItemGetDto
         {
-            ToDoItemGetDtos = toDoItemDtos,
+            TodoItemId = t.TodoItemId,
+            Title = t.Title,
+            Description = t.Description,
+            IsCompleted = t.IsCompleted,
+            CreatedAt = t.CreatedAt,
+            DueDate = t.DueDate
+        }).ToList();
+
+        var totalCount = _todoItemRepository.SelectAll().Count();
+
+        var todoItemListResult = new TodoItemListResult()
+        {
+            TodoItemGetDtos = toDoItemDtos,
             TotalCount = totalCount,
         };
 
-        return getAllResponseModel;
+        return todoItemListResult;
     }
+
+
 }

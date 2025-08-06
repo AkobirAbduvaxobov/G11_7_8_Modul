@@ -1,5 +1,8 @@
 
+using TodoList.Application;
+using TodoList.Infrastructure;
 using TodoList.Server.Configurations;
+using TodoList.Server.Endpoints;
 
 namespace TodoList.Server
 {
@@ -7,7 +10,7 @@ namespace TodoList.Server
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
 
@@ -16,7 +19,10 @@ namespace TodoList.Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.ConfigureDB();
+            //builder.ConfigureDB();
+            builder.Services.AddApplication();
+            builder.Services.AddInfrastructure(builder.Configuration);
+            
 
             var app = builder.Build();
 
@@ -34,6 +40,7 @@ namespace TodoList.Server
 
             app.MapControllers();
 
+            app.MapTodoItemEndpoints();
             app.Run();
         }
     }
