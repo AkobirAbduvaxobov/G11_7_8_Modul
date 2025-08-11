@@ -67,4 +67,56 @@ public class TodoItemServiceTests
         Assert.Equal(4, id);
     }
 
+    [Fact]
+    public async Task GetAllAsync_WhenCalled_ReturnsMappedDtos()
+    {
+        // Arrange
+        var todoItems = new List<TodoItem>
+        {
+            new TodoItem
+            {
+                TodoItemId = 1,
+                Title = "Task 1",
+                Description = "Description 1",
+                IsCompleted = false,
+                CreatedAt = new DateTime(2025, 8, 10),
+                DueDate = new DateTime(2025, 8, 15)
+            },
+            new TodoItem
+            {
+                TodoItemId = 2,
+                Title = "Task 2",
+                Description = "Description 2",
+                IsCompleted = true,
+                CreatedAt = new DateTime(2025, 8, 9),
+                DueDate = new DateTime(2025, 8, 20)
+            }
+        };
+
+        _mockRepo
+            .Setup(r => r.SelectAllAsync())
+            .ReturnsAsync(todoItems);
+
+        // Act
+        var result = await _todoItemService.GetAllAsync();
+
+        // Assert
+        Assert.Equal(2, result.Count);
+
+        var first = result.First();
+        Assert.Equal(1, first.TodoItemId);
+        Assert.Equal("Task 1", first.Title);
+        Assert.Equal("Description 1", first.Description);
+        Assert.False(first.IsCompleted);
+        Assert.Equal(new DateTime(2025, 8, 10), first.CreatedAt);
+        Assert.Equal(new DateTime(2025, 8, 15), first.DueDate);
+
+        var second = result.Last();
+        Assert.Equal(2, second.TodoItemId);
+        Assert.Equal("Task 2", second.Title);
+        Assert.Equal("Description 2", second.Description);
+        Assert.True(second.IsCompleted);
+        Assert.Equal(new DateTime(2025, 8, 9), second.CreatedAt);
+        Assert.Equal(new DateTime(2025, 8, 20), second.DueDate);
+    }
 }
