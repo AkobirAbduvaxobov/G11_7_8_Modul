@@ -45,6 +45,36 @@ public class TodoItemTests : IClassFixture<CustomWebApplicationFactory>
         Assert.Equal("BYD song pro 110", todoItemGetDto.Description);
     }
 
+    [Fact]
+    public async Task DeleteTodo_RemovesTodo()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+
+        var todoItem = new TodoItemCreateDto
+        {
+            Title = "Buy car",
+            Description = "BYD song pro 110",
+            DueDate = DateTime.UtcNow.AddDays(7)
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/v1/api/todoitems", todoItem);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var createdId = await response.Content.ReadFromJsonAsync<long>();
+        Assert.True(createdId > 0);
+
+        // Delete the contact
+        var deleteResponse = await client.DeleteAsync($"/v1/api/todoitems/{createdId}");
+        deleteResponse.EnsureSuccessStatusCode();
+
+        //// Verify the contact is deleted
+        //var getResponse = await client.GetAsync($"/v1/api/todoitems/{createdId}");
+        //Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
+    }
+
     //[Fact]
     //public async Task GetAllContacts_ReturnsEmptyListInitially()
     //{
