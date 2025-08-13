@@ -17,16 +17,7 @@ public class TodoItemTests : IClassFixture<CustomWebApplicationFactory>
     public async Task PostTodo_AddsTodo()
     {
         // Arrange
-        HttpClient? client;  
-        try
-        {
-            client = _factory.CreateClient();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error creating client: {ex.Message}");
-            throw;
-        }
+        var client = _factory.CreateClient();   
 
         var todoItem = new TodoItemCreateDto
         {

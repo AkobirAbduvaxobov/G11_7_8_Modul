@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using TodoList.Infrastructure.Persistence;
+using TodoList.Server;
+
 
 namespace TodoList.IntegrationTests;
 
