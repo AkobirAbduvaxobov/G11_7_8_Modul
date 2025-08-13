@@ -9,12 +9,15 @@ namespace TodoList.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, string environmentName)
     {
-        var connectionString = configuration.GetConnectionString("DatabaseConnection");
+        if (environmentName != "Testing")
+        {
+            var connectionString = configuration.GetConnectionString("DatabaseConnection");
 
-        services.AddDbContext<AppDbContext>(options =>
-          options.UseSqlServer(connectionString));
+            services.AddDbContext<AppDbContext>(options =>
+              options.UseSqlServer(connectionString));
+        }
 
         services.AddScoped<ITodoItemRepository, TodoItemRepository>();
 

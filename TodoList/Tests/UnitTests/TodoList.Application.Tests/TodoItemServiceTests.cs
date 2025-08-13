@@ -58,8 +58,6 @@ public class TodoItemServiceTests
             })
             .ReturnsAsync(1);
 
-
-
         // Act
         var id = await _todoItemService.AddAsync(todoItemCreateDto);
 
