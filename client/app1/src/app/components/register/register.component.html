@@ -1,0 +1,55 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow p-4">
+        <h2 class="text-center mb-4">Register</h2>
+        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+          
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input id="firstName" class="form-control" type="text"
+                   [(ngModel)]="registerModel.firstName" name="firstName" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input id="lastName" class="form-control" type="text"
+                   [(ngModel)]="registerModel.lastName" name="lastName" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" class="form-control" type="email"
+                   [(ngModel)]="registerModel.email" name="email" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input id="username" class="form-control" type="text"
+                   [(ngModel)]="registerModel.username" name="username" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" class="form-control" type="password"
+                   [(ngModel)]="registerModel.password" name="password" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input id="confirmPassword" class="form-control" type="password"
+                   [(ngModel)]="registerModel.confirmPassword" name="confirmPassword" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+
+        <div class="text-center mt-3">
+          <span>Already have an account?</span>
+          <!-- <a href="#" (click)="goToLogin($event)">Login</a> -->
+          <a href="/login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
