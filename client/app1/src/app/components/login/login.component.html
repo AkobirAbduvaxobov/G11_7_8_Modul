@@ -6,9 +6,9 @@
         <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
 
           <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input id="email" class="form-control" type="email"
-                   [(ngModel)]="loginModel.email" name="email" required>
+            <label for="userName" class="form-label">UserName</label>
+            <input id="userName" class="form-control" type="text"
+                   [(ngModel)]="loginModel.userName" name="userName" required>
           </div>
 
           <div class="mb-3">

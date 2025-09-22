@@ -3,6 +3,7 @@ import { RegisterModel } from '../../services/models/register.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -13,11 +14,15 @@ import { FormsModule } from '@angular/forms';
 export class RegisterComponent {
   registerModel: RegisterModel = new RegisterModel();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   onSubmit() {
     console.log('Register data:', this.registerModel);
-    // TODO: call API
+    
+    this.authService.register(this.registerModel).subscribe({
+        next: () => this.router.navigate(['/login']),
+        error: (err) => console.error('Sign-up failed:', err)
+      });
   }
 
   goToLogin(event: Event) {
