@@ -16,4 +16,8 @@
     <Folder Include="Queries\GetBookById\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CqrsBook.Domain\CqrsBook.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

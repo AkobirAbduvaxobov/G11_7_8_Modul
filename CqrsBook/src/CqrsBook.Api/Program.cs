@@ -1,3 +1,5 @@
+using CqrsBook.Application.Commands.CreateBook;
+using CqrsBook.Infrastructure;
 
 namespace CqrsBook.Api
 {
@@ -13,6 +15,12 @@ namespace CqrsBook.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddInfrastructure(builder.Configuration);
+
+            builder.Services.AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssembly(typeof(CreateBookCommand).Assembly));
+
 
             var app = builder.Build();
 

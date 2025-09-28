@@ -1,6 +1,6 @@
-﻿namespace CqrsBook.Application.Dtos;
+﻿namespace CqrsBook.Domain.Entities;
 
-public class BookDto
+public class Book
 {
     public long BookId { get; set; }
     public string Title { get; set; }
